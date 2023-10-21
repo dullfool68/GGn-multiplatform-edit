@@ -5,7 +5,7 @@
 // @require     https://unpkg.com/react@18/umd/react.development.js
 // @require     https://unpkg.com/react-dom@18/umd/react-dom.development.js
 // @match       https://gazellegames.net/torrents.php?id=*
-// @version     0.0.0
+// @version     0.1.0
 // @homepage    https://github.com/dullfool68/GGn-multiplatform-edit
 // @author      dullfool68
 // @license     MIT
@@ -2307,4 +2307,3 @@ var rollupUserScript = (function (React, require$$0) {
   return index;
 
 })(React, ReactDOM);
-//# sourceMappingURL=bundle.user.js.map
