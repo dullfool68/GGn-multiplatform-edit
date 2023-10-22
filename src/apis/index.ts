@@ -1,4 +1,8 @@
-import { DELETE_TAGS_SELECTOR } from "../constants";
+import {
+  DELETE_TAGS_SELECTOR,
+  GAMEFAQ_PLATFORM_LINK_SELECTOR,
+  GAMEFAQ_PLATFORM_MAPPING,
+} from "../constants";
 import { APIResponse, Link } from "../types";
 import { getWebLinksPayload } from "../utils";
 
@@ -39,6 +43,7 @@ export async function copyWeblinksToLinkedGroup(
   const payload = await getWebLinksPayload(
     weblinks,
     linkedGroupWeblinksFormData,
+    linkedGroup.title,
   );
 
   const response = await fetch("/torrents.php", {
@@ -148,4 +153,28 @@ export async function addTagsToLinkedGroup(
   });
 
   return await response.json();
+}
+
+export async function getGameFaqLinkByPlatform(url: string, platform: string) {
+  const response = await fetch(url);
+
+  const rawHTML = await response.text();
+
+  const parser = new DOMParser();
+
+  const parsedHTML = parser.parseFromString(rawHTML, "text/html");
+
+  const anchorElements = parsedHTML.querySelectorAll<HTMLAnchorElement>(
+    GAMEFAQ_PLATFORM_LINK_SELECTOR,
+  );
+
+  return Array.from(anchorElements)
+    .map((anchorElement) => {
+      const spanElement = anchorElement.childNodes[0] as HTMLSpanElement;
+      return {
+        href: anchorElement.href,
+        title: spanElement.innerText,
+      };
+    })
+    .find((link) => link.title === GAMEFAQ_PLATFORM_MAPPING[platform])?.href;
 }
