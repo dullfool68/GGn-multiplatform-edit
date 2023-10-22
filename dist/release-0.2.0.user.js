@@ -2436,4 +2436,3 @@ var rollupUserScript = (function (React, require$$0) {
   return index;
 
 })(React, ReactDOM);
-//# sourceMappingURL=bundle.user.js.map
