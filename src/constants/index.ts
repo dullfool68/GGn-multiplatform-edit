@@ -173,4 +173,4 @@ export const GAMEFAQ_PLATFORM_MAPPING = {
 };
 
 // REGEXES
-export const TEXT_INSIDE_PARANTHESIS_REGEX = /\(([^)]+)\)/;
+export const TEXT_INSIDE_PARANTHESIS_REGEX = /\(([^)]+)\)(?![^(]*\))/g;
