@@ -49,13 +49,16 @@ export const App = () => {
     );
     try {
       setLoading(true);
+
+      const filteredDestinationLinkedGroups = destinationLinkedGroups.filter(
+        (_, index) => (areAllCheckboxesUnchecked ? true : checkboxes[index]),
+      );
+
       for (const { id } of collections) {
+        // TODO: Hide all this logic
         await addTorrentsToCollection(
           id,
-          destinationLinkedGroups
-            .filter((_, index) =>
-              areAllCheckboxesUnchecked ? true : checkboxes[index],
-            )
+          filteredDestinationLinkedGroups
             .filter(({ title }) => {
               if (
                 PC_LINKED_GROUPS_TITLES.includes(title) &&
@@ -72,7 +75,7 @@ export const App = () => {
         );
       }
 
-      for (const destinationLinkedGroup of destinationLinkedGroups) {
+      for (const destinationLinkedGroup of filteredDestinationLinkedGroups) {
         if (copyWeblinks) {
           await copyWeblinksToLinkedGroup(weblinks, destinationLinkedGroup);
         }
