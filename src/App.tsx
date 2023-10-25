@@ -38,12 +38,6 @@ export const App = () => {
   );
 
   async function handleRun() {
-    const confirmationText = prompt("Type 'confirm' to proceed.");
-    if (confirmationText !== "confirm") {
-      alert("Aborted, no changes were made.");
-      return;
-    }
-
     const areAllCheckboxesUnchecked = checkboxes.every(
       (checkbox) => checkbox === false,
     );
