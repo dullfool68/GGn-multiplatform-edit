@@ -23,6 +23,61 @@ declare namespace GMType {
   type NotificationOnClick = (this: NotificationThis) => any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   type NotificationOnDone = (this: NotificationThis, clicked: boolean) => any;
+  interface XHRDetails<CONTEXT_TYPE> {
+    method?: "GET" | "HEAD" | "POST" | "PUT";
+    url?: string;
+    headers?: { readonly [key: string]: string };
+    data?: string;
+    binary?: boolean;
+    timeout?: number;
+    context?: CONTEXT_TYPE;
+    responseType?: "arraybuffer" | "blob" | "json";
+    overrideMimeType?: string;
+    anonymous?: boolean;
+    fetch?: boolean;
+    username?: string;
+    password?: string;
+
+    onload?: Listener<XHRResponse<CONTEXT_TYPE>>;
+    onloadstart?: Listener<XHRResponse<CONTEXT_TYPE>>;
+    onprogress?: Listener<XHRProgress<CONTEXT_TYPE>>;
+    onreadystatechange?: Listener<XHRResponse<CONTEXT_TYPE>>;
+    ontimeout?: Listener<XHRProgress<CONTEXT_TYPE>>;
+    onabort?: Listener<XHRProgress<CONTEXT_TYPE>>;
+    onerror?: Listener<XHRProgress<CONTEXT_TYPE>>;
+  }
+
+  interface AbortHandle<RETURN_TYPE> {
+    abort(): RETURN_TYPE;
+  }
+  interface XHRProgress<CONTEXT_TYPE> extends XHRResponse<CONTEXT_TYPE> {
+    done: number;
+    lengthComputable: boolean;
+    loaded: number;
+    position: number;
+    total: number;
+    totalSize: number;
+  }
+
+  type Listener<OBJ> = (this: OBJ, event: OBJ) => unknown;
+
+  interface XHRResponse<CONTEXT_TYPE> {
+    DONE: 4;
+    HEADERS_RECEIVED: 2;
+    LOADING: 3;
+    OPENED: 1;
+    UNSENT: 0;
+
+    context: CONTEXT_TYPE;
+    finalUrl: string;
+    readyState: 0 | 1 | 2 | 3 | 4;
+    responseHeaders: string;
+    status: number;
+    statusText: string;
+    response: unknown;
+    responseText: string;
+    responseXML: Document | null;
+  }
 }
 
 interface GM {
@@ -52,6 +107,10 @@ interface GM {
     onclick?: GMType.NotificationOnDone,
   ): Promise<void>;
   openInTab(url: string): Promise<void>;
+
+  xmlhttpRequest: <CONTEXT_TYPE>(
+    details: GMType.XHRDetails<CONTEXT_TYPE>,
+  ) => GMType.AbortHandle<void>;
 }
 
 declare let GM: GM;

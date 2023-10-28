@@ -174,3 +174,6 @@ export const GAMEFAQ_PLATFORM_MAPPING = {
 
 // REGEXES
 export const TEXT_INSIDE_PARANTHESIS_REGEX = /\(([^)]+)\)$/;
+
+// MISC
+export const GAMEFAQ_URL = "https://gamefaqs.gamespot.com";

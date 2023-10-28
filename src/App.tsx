@@ -41,6 +41,7 @@ export const App = () => {
     const areAllCheckboxesUnchecked = checkboxes.every(
       (checkbox) => checkbox === false,
     );
+
     try {
       setLoading(true);
 
@@ -83,7 +84,7 @@ export const App = () => {
         }
       }
     } catch (error) {
-      console.error(error);
+      console.error("something went wrong", error);
     } finally {
       setLoading(false);
     }

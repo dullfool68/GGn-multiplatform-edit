@@ -1,4 +1,3 @@
-import { getGameFaqLinkByPlatform } from "../apis";
 import {
   COLLECTIONS_SELECTORS,
   EXCLUDED_COLLECTION_IDS,
@@ -135,7 +134,6 @@ export function getCollectionIdFromURL(url: string) {
 export async function getWebLinksPayload(
   weblinks: Link[],
   linkedGroupWeblinksFormData: FormData,
-  platform: string,
 ): Promise<URLSearchParams> {
   // Clone the provided FormData object, don't want to edit the original
   const formData = cloneFormData(linkedGroupWeblinksFormData);
@@ -159,7 +157,7 @@ export async function getWebLinksPayload(
      * If the value associated with the URI label is not found in the FormData, skip to the next iteration.
      * This means that the destination linked group doesn't have that field.
      */
-    if (!value) {
+    if (value === null) {
       continue;
     }
 
@@ -169,16 +167,6 @@ export async function getWebLinksPayload(
      * This means that the destination linked group has that field, but it's empty.
      */
     if (value === "") {
-      if (uriLabel === "gamefaqsuri") {
-        const gamesFAQLink = await getGameFaqLinkByPlatform(href, platform);
-
-        if (gamesFAQLink) {
-          formData.set(uriLabel, gamesFAQLink);
-        }
-
-        continue;
-      }
-
       formData.set(uriLabel, href);
     }
   }
@@ -203,4 +191,20 @@ export function cloneFormData(formData: FormData) {
   }
 
   return clone;
+}
+
+export function xmlhttpRequestPromisified<T>(
+  options: Pick<GMType.XHRDetails<T>, "url" | "method" | "headers">,
+) {
+  return new Promise((resolve, reject) => {
+    GM.xmlhttpRequest({
+      ...options,
+      onload(response) {
+        resolve(response);
+      },
+      onerror(response) {
+        reject(response);
+      },
+    });
+  });
 }
